@@ -5,7 +5,7 @@
       background-size: cover;
       color: rgb(205, 114, 114);
       display: flex;
-      background-image: url(תצפית-כוכבים-במצפה-רמון.webp);
+      background-image: url(images\תצפית-כוכבים-במצפה-רמון‪.webp);
       flex-direction: column;
       align-items: center;
       justify-content: center;
@@ -63,4 +63,5 @@
     .quick-links a:hover {
       text-decoration: underline;
     }
+
  
