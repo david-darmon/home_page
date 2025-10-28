@@ -54,15 +54,66 @@
     }
 
     .quick-links a {
-      margin: 0 15px;
-      font-size: 1.1em;
-      color: #ffffff;
-      text-decoration: none;
+      
+      max-height:5px;
+      max-width:15px;
     }
 
     .quick-links a:hover {
       text-decoration: underline;
     }
 
- 
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(120px, 1fr));
+   grid-template-rows: repeat(2, minmax(120px, 1fr));
+  gap: 20px;
+  justify-content: center;
+  margin-top: 2em;
+  width: 80%; /* כדי לא למתוח עד הסוף */
+  max-width: 600px;
+}
 
+
+.quick-links {
+  text-align: center;
+}
+
+.quick-links a {
+  color: white;
+  font-size: 1.2em;
+  text-decoration: none;
+  padding: 10px 20px;
+  border: 1px solid #444;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.quick-links a:hover {
+  background-color: #333;
+}
+.quick-links a {
+  display: flex;
+  align-items: center;   /* ממרכז אנכית */
+  justify-content: center; /* ממרכז אופקית */
+  color: white;
+  font-size: 1.2em;
+  text-decoration: none;
+  padding: 10px 20px;
+  border: 1px solid #444;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+.quick-links a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: clamp(0.8rem, 2vw, 1.5rem);
+  text-decoration: none;
+  padding: 10px 20px;
+  border: 1px solid #444;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+  min-height: 50px;
+}
