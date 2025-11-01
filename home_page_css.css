@@ -4,7 +4,7 @@ body {
   font-family: 'Segoe UI', sans-serif;
   background-color: black;
   background-size: cover;
-  color: rgb(205, 114, 114);
+  color: rgb(0, 0, 0);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -120,3 +120,4 @@ h1 {
   from { transform: rotateX(0deg) rotateY(0deg); }
   to   { transform: rotateX(360deg) rotateY(360deg); }
 }
+
