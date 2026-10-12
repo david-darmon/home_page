@@ -85,7 +85,7 @@ const material = new THREE.MeshStandardMaterial({
 const shape = new THREE.Mesh(geometry, material);
 
 // גדול יותר מגובה המסך, חתוך בצד ימין
-shape.scale.setScalar(5.8);
+shape.scale.setScalar(3);
 shape.position.set(15, 0, -1);
 
 scene.add(shape);
