@@ -1,29 +1,55 @@
+
 <!DOCTYPE html>
 <html lang="he">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google</title>
   <link rel="stylesheet" href="home_page_css.css">
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>google</title>
 </head>
 <body>
+
   <div id="background"></div>
 
-  <h1>google</h1>
-  <div id="clock">00:00:00</div>
+  <main class="page-content">
+    <h1>google</h1>
 
-  <form id="search-box" action="https://www.google.com/search" method="get">
-    <input type="text" name="q" placeholder="Search in google" autofocus>
-    <button type="submit">Search</button>
-  </form>
-<div class="buttons">
-  <div class="quick-links"> <a href="https://gmail.com" target="_blank">Gmail</a> </div>
-  <div class="quick-links"> <a href="https://maps.google.com" target="_blank">maps</a> </div>
-  <div class="quick-links"> <a href="https://chat.openai.com" target="_blank">ChatGPT</a> </div>
-  <div class="quick-links"> <a href="https://youtube.com" target="_blank">YouTube</a> </div>
-  <div class="quick-links"> <a href="https://github.com" target="_blank">github</a> </div>
-  <div class="quick-links"> <a href="https://moodle.youcube.co.il/my/courses.php" target="_blank">Ucube</a> </div>
-  </div>
-<script src="home_page_js.js"></script>
+    <div id="clock">00:00:00</div>
+
+    <form id="search-box"
+          action="https://www.google.com/search"
+          method="get">
+      <input
+        type="text"
+        name="q"
+        placeholder="Search in Google"
+        autofocus>
+      <button type="submit">Search</button>
+    </form>
+
+    <div class="buttons">
+      <div class="quick-links">
+        <a href="https://gmail.com" target="_blank" rel="noopener noreferrer">Gmail</a>
+      </div>
+      <div class="quick-links">
+        <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer">Maps</a>
+      </div>
+      <div class="quick-links">
+        <a href="https://chatgpt.com" target="_blank" rel="noopener noreferrer">ChatGPT</a>
+      </div>
+      <div class="quick-links">
+        <a href="https://youtube.com" target="_blank" rel="noopener noreferrer">YouTube</a>
+      </div>
+      <div class="quick-links">
+        <a href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </div>
+      <div class="quick-links">
+        <a href="https://moodle.youcube.co.il/my/courses.php"
+           target="_blank" rel="noopener noreferrer">Ucube</a>
+      </div>
+    </div>
+  </main>
+
+  <script type="module" src="home_page_js.js"></script>
 </body>
 </html>
