@@ -1,106 +1,143 @@
+
+import * as THREE from
+  'https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js';
+
+// ========================
+// שעון דיגיטלי
+// ========================
+
 function updateClock() {
   const now = new Date();
+
   const hours = String(now.getHours()).padStart(2, '0');
   const minutes = String(now.getMinutes()).padStart(2, '0');
   const seconds = String(now.getSeconds()).padStart(2, '0');
-  document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
+
+  document.getElementById('clock').textContent =
+    `${hours}:${minutes}:${seconds}`;
 }
 
-// הפעלה ראשונית של השעון
-setInterval(updateClock, 1000);
 updateClock();
+setInterval(updateClock, 1000);
 
 // ========================
 // צבעי כפתורים משתנים
 // ========================
 
 const buttons = document.querySelectorAll('.buttons a');
-let hueOffset = 0; // יזוז לאורך הקשת
+let hueOffset = 0;
 
 function updateButtonColors() {
   const count = buttons.length;
 
   buttons.forEach((btn, index) => {
-    // מחלקים את הקשת לפי מספר הכפתורים + מיישמים את ה-offset
-    const hue = (hueOffset + (index / count) * 150) % 150;
-    btn.style.backgroundColor = `hsl(${hue}, 20%, 50%)`;
+    const hue = (hueOffset + (index / Math.max(count, 1)) * 150) % 360;
+    btn.style.backgroundColor = `hsl(${hue}, 38%, 62%)`;
   });
 
-  hueOffset += 0.075; // משנה את הצבעים בהדרגה
-  requestAnimationFrame(updateButtonColors); // לולאה חלקה
+  hueOffset = (hueOffset + 0.075) % 360;
+
+  requestAnimationFrame(updateButtonColors);
 }
 
-// התחלת האנימציה
 updateButtonColors();
+
+// ========================
+// רקע תלת-ממדי באמצעות Three.js
+// ========================
+
 const bg = document.getElementById('background');
-const count = 20; // מספר הצורות ברקע
 
-for (let i = 0; i < count; i++) {
-  const shape = document.createElement('div');
-  shape.className = 'background-shape';
-  
-  // גודל התחלה רנדומלי
-  let size = 30 + Math.random() * 70;
-  shape.style.width = size + 'px';
-  shape.style.height = size + 'px';
+const scene = new THREE.Scene();
 
-  // מיקום התחלתי רנדומלי
-  let x = Math.random() * window.innerWidth;
-  let y = Math.random() * window.innerHeight;
-  shape.style.left = x + 'px';
-  shape.style.top = y + 'px';
+const camera = new THREE.PerspectiveCamera(
+  45,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  100
+);
 
-  // מהירות סיבוב רנדומלית
-  shape.style.animationDuration = (5 + Math.random()*5) + 's';
+camera.position.z = 8;
 
-  // יצירת 6 צדדים של קובייה
-  ['front','back','right','left','top','bottom'].forEach(side => {
-    const face = document.createElement('div');
-    face.style.width = size + 'px';
-    face.style.height = size + 'px';
-    face.style.background = `hsl(${Math.random()*70},60%,60%)`;
-    switch(side){
-      case 'front': face.style.transform = `rotateY(0deg) translateZ(${size/2}px)`; break;
-      case 'back': face.style.transform = `rotateY(180deg) translateZ(${size/2}px)`; break;
-      case 'right': face.style.transform = `rotateY(90deg) translateZ(${size/2}px)`; break;
-      case 'left': face.style.transform = `rotateY(-90deg) translateZ(${size/2}px)`; break;
-      case 'top': face.style.transform = `rotateX(90deg) translateZ(${size/2}px)`; break;
-      case 'bottom': face.style.transform = `rotateX(-90deg) translateZ(${size/2}px)`; break;
-    }
-    shape.appendChild(face);
-  });
+const renderer = new THREE.WebGLRenderer({
+  alpha: true,
+  antialias: true
+});
 
-  bg.appendChild(shape);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setClearColor(0x000000, 0);
 
-  // תנועה אקראית ושינוי גודל
-  let dx = (Math.random()-0.5)*2;
-  let dy = (Math.random()-0.5)*2;
-  let dSize = (Math.random()-0.5)*0.5;
+bg.appendChild(renderer.domElement);
 
-  function animate(){
-    x += dx;
-    y += dy;
-    size += dSize;
+// גוף גאומטרי גדול עם פאות משולשות
+const geometry = new THREE.IcosahedronGeometry(1, 3);
 
-    // גבולות המסך
-    if(x<0 || x>window.innerWidth-size) dx=-dx;
-    if(y<0 || y>window.innerHeight-size) dy=-dy;
-    if(size<20 || size>100) dSize=-dSize;
+const material = new THREE.MeshStandardMaterial({
+  color: 0x30385f,
+  roughness: 0.58,
+  metalness: 0.22,
+  flatShading: true
+});
 
-    shape.style.left = x + 'px';
-    shape.style.top = y + 'px';
-    shape.style.width = size + 'px';
-    shape.style.height = size + 'px';
+const shape = new THREE.Mesh(geometry, material);
 
-    shape.querySelectorAll('div').forEach(face => {
-      face.style.width = size+'px';
-      face.style.height = size+'px';
-      const t = face.style.transform;
-      face.style.transform = t.replace(/translateZ\(\d+(\.\d+)?px\)/, `translateZ(${size/2}px)`);
-    });
+// גדול יותר מגובה המסך, חתוך בצד ימין
+shape.scale.setScalar(5.8);
+shape.position.set(4.5, 0, -1);
 
-    requestAnimationFrame(animate);
-  }
+scene.add(shape);
 
-  animate();
+// קווי המתאר של הפאות
+const edgesGeometry = new THREE.EdgesGeometry(geometry, 15);
+
+const edgesMaterial = new THREE.LineBasicMaterial({
+  color: 0x8799ed,
+  transparent: true,
+  opacity: 0.65
+});
+
+const edges = new THREE.LineSegments(
+  edgesGeometry,
+  edgesMaterial
+);
+
+edges.scale.copy(shape.scale);
+edges.position.copy(shape.position);
+
+scene.add(edges);
+
+// תאורה כללית
+scene.add(new THREE.AmbientLight(0xffffff, 1.5));
+
+// אור כחול
+const blueLight = new THREE.PointLight(0x8298ff, 35);
+blueLight.position.set(2, 4, 5);
+scene.add(blueLight);
+
+// אור סגול
+const purpleLight = new THREE.PointLight(0xb49aff, 25);
+purpleLight.position.set(5, -3, 3);
+scene.add(purpleLight);
+
+// אנימציה
+function animate() {
+  requestAnimationFrame(animate);
+
+  shape.rotation.y += 0.0025;
+  shape.rotation.x += 0.0008;
+
+  edges.rotation.copy(shape.rotation);
+
+  renderer.render(scene, camera);
 }
+
+animate();
+
+// התאמה לשינוי גודל החלון
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
